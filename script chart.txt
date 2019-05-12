@@ -1,0 +1,66 @@
+<script>
+	$(function () {
+		new Chart(document.getElementById("line_chart_transaksi").getContext("2d"), getChartJs('line'));
+		new Chart(document.getElementById("bar_chart_stok").getContext("2d"), getChartJs('bar'));
+	});
+
+	function getChartJs(type) {
+		var config = null;
+
+		if (type === 'line') {
+			config = {
+				type: 'line',
+				data: {
+					labels: [
+						<?php foreach($bulan_transaksi as $b): ?>
+						'<?=$b->waktu?>',
+						<?php endforeach?>
+					],
+					datasets: [{
+						label: "Jumlah Transaksi",
+						data: [
+						<?php foreach($transaksi_perbulan as $t): ?>
+						'<?=$t->jumlah?>',
+						<?php endforeach?>
+					],
+						borderColor: 'rgba(0, 188, 212, 0.75)',
+						backgroundColor: 'rgba(0, 188, 212, 0.3)',
+						pointBorderColor: 'rgba(0, 188, 212, 0)',
+						pointBackgroundColor: 'rgba(0, 188, 212, 0.9)',
+						pointBorderWidth: 1
+					}]
+				},
+				options: {
+					responsive: true,
+					legend: false
+				}
+			}
+		}
+		else if (type === 'bar') {
+			config = {
+				type: 'bar',
+				data: {
+					labels: [
+						<?php foreach($produk as $p):?>
+							'<?=$p->nama?>',
+						<?php endforeach?>
+					],
+					datasets: [{
+						label: "Jumlah Stok",
+						data: [
+							<?php foreach($produk as $p):?>
+							'<?=$p->stok?>',
+							<?php endforeach?>
+						],
+						backgroundColor: 'rgba(0, 188, 212, 0.8)'
+					}],
+				},
+				options: {
+					responsive: true,
+					legend: false
+				}
+			}
+		}
+		return config;
+	}
+</script>
